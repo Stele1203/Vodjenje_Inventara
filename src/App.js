@@ -1,24 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { useState } from "react";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import { ProductsPage, EditProductPage } from "./pages/ProductsPage";
+import HomePage from "./pages/HomePage";
+import "./styles/global.css";
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <nav className="navbar">
+        <div className="logo">LOGO</div>
+        <div className="nav-links">
+          <Link to="/">Home</Link>
+          {isAuthenticated ? (
+            <>
+              <Link to="/products">Moji Produkti</Link>
+              <button onClick={() => setIsAuthenticated(false)}>
+                Sign Out
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/login">Login</Link>
+              <Link to="/register">Sign Up</Link>
+            </>
+          )}
+        </div>
+      </nav>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/products" element={<ProductsPage />} />
+        <Route path="/edit/:id" element={<EditProductPage />} />
+      </Routes>
+    </Router>
   );
 }
 
